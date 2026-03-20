@@ -1,6 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Init } from "../pages/init/Init";
+import { NotesList } from "../pages/notes/NotesList";
 
 export const Route = createFileRoute("/")({
-  component: Init,
+  component: MainRoute,
+  staticData: {
+    title: "Notes"
+  }
 });
+
+function MainRoute() {
+  return <NotesList/>
+}

@@ -12,7 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
+import { Route as NotesIndexRouteImport } from './routes/notes/index'
 import { Route as ProductsProductIDRouteImport } from './routes/products/$productID'
+import { Route as NotesAddRouteImport } from './routes/notes/add'
+import { Route as NotesNoteIdRouteImport } from './routes/notes/$noteId'
+import { Route as NotesNoteIdEditRouteImport } from './routes/notes/$noteId.edit'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -29,43 +33,103 @@ const ProductsIndexRoute = ProductsIndexRouteImport.update({
   path: '/products/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NotesIndexRoute = NotesIndexRouteImport.update({
+  id: '/notes/',
+  path: '/notes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsProductIDRoute = ProductsProductIDRouteImport.update({
   id: '/products/$productID',
   path: '/products/$productID',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NotesAddRoute = NotesAddRouteImport.update({
+  id: '/notes/add',
+  path: '/notes/add',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotesNoteIdRoute = NotesNoteIdRouteImport.update({
+  id: '/notes/$noteId',
+  path: '/notes/$noteId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotesNoteIdEditRoute = NotesNoteIdEditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => NotesNoteIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/notes/$noteId': typeof NotesNoteIdRouteWithChildren
+  '/notes/add': typeof NotesAddRoute
   '/products/$productID': typeof ProductsProductIDRoute
+  '/notes/': typeof NotesIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/notes/$noteId/edit': typeof NotesNoteIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/notes/$noteId': typeof NotesNoteIdRouteWithChildren
+  '/notes/add': typeof NotesAddRoute
   '/products/$productID': typeof ProductsProductIDRoute
+  '/notes': typeof NotesIndexRoute
   '/products': typeof ProductsIndexRoute
+  '/notes/$noteId/edit': typeof NotesNoteIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/notes/$noteId': typeof NotesNoteIdRouteWithChildren
+  '/notes/add': typeof NotesAddRoute
   '/products/$productID': typeof ProductsProductIDRoute
+  '/notes/': typeof NotesIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/notes/$noteId/edit': typeof NotesNoteIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/products/$productID' | '/products/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/notes/$noteId'
+    | '/notes/add'
+    | '/products/$productID'
+    | '/notes/'
+    | '/products/'
+    | '/notes/$noteId/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/products/$productID' | '/products'
-  id: '__root__' | '/' | '/about' | '/products/$productID' | '/products/'
+  to:
+    | '/'
+    | '/about'
+    | '/notes/$noteId'
+    | '/notes/add'
+    | '/products/$productID'
+    | '/notes'
+    | '/products'
+    | '/notes/$noteId/edit'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/notes/$noteId'
+    | '/notes/add'
+    | '/products/$productID'
+    | '/notes/'
+    | '/products/'
+    | '/notes/$noteId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  NotesNoteIdRoute: typeof NotesNoteIdRouteWithChildren
+  NotesAddRoute: typeof NotesAddRoute
   ProductsProductIDRoute: typeof ProductsProductIDRoute
+  NotesIndexRoute: typeof NotesIndexRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
 }
 
@@ -92,6 +156,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/notes/': {
+      id: '/notes/'
+      path: '/notes'
+      fullPath: '/notes/'
+      preLoaderRoute: typeof NotesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products/$productID': {
       id: '/products/$productID'
       path: '/products/$productID'
@@ -99,13 +170,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsProductIDRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/notes/add': {
+      id: '/notes/add'
+      path: '/notes/add'
+      fullPath: '/notes/add'
+      preLoaderRoute: typeof NotesAddRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notes/$noteId': {
+      id: '/notes/$noteId'
+      path: '/notes/$noteId'
+      fullPath: '/notes/$noteId'
+      preLoaderRoute: typeof NotesNoteIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notes/$noteId/edit': {
+      id: '/notes/$noteId/edit'
+      path: '/edit'
+      fullPath: '/notes/$noteId/edit'
+      preLoaderRoute: typeof NotesNoteIdEditRouteImport
+      parentRoute: typeof NotesNoteIdRoute
+    }
   }
 }
+
+interface NotesNoteIdRouteChildren {
+  NotesNoteIdEditRoute: typeof NotesNoteIdEditRoute
+}
+
+const NotesNoteIdRouteChildren: NotesNoteIdRouteChildren = {
+  NotesNoteIdEditRoute: NotesNoteIdEditRoute,
+}
+
+const NotesNoteIdRouteWithChildren = NotesNoteIdRoute._addFileChildren(
+  NotesNoteIdRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  NotesNoteIdRoute: NotesNoteIdRouteWithChildren,
+  NotesAddRoute: NotesAddRoute,
   ProductsProductIDRoute: ProductsProductIDRoute,
+  NotesIndexRoute: NotesIndexRoute,
   ProductsIndexRoute: ProductsIndexRoute,
 }
 export const routeTree = rootRouteImport
