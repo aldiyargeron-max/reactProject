@@ -14,8 +14,8 @@ export const COLORS_TEXT = {
 };
 
 export const COLORS_BACKGROUND = {
-  primary: "text-black",
-  alternative: "text-white",
+  primary: "bg-black",
+  alternative: "bg-white",
 
   main100: "bg-lime-500",
   main200: "bg-lime-400",
@@ -26,4 +26,19 @@ export const COLORS_BACKGROUND = {
   secondary200: "bg-gray-400",
   secondary300: "bg-gray-500",
   secondary400: "bg-gray-600",
+};
+
+export const COLORS_BORDER = {
+  primary: "border-black",
+  alternative: "border-white",
+
+  main100: "border-lime-500",
+  main200: "border-lime-400",
+  main300: "border-lime-300",
+  main400: "border-lime-100",
+
+  secondary100: "border-gray-300",
+  secondary200: "border-gray-400",
+  secondary300: "border-gray-500",
+  secondary400: "border-gray-600",
 };
